@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import org.example.ImageSystem;
 import org.example.Mandelbrot;
 import org.example.core.Template;
 import spark.Request;
@@ -13,11 +14,10 @@ import java.io.OutputStream;
 import java.util.HashMap;
 
 public class FractalController {
+    private final ImageSystem imageSystem;
 
-    private final Mandelbrot mandelbrot;
-
-    public FractalController(){
-        mandelbrot = new Mandelbrot(1000,1000,1000);
+    public FractalController(ImageSystem imageSystem){
+        this.imageSystem = imageSystem;
     }
 
     public Response getFractal(Request request, Response response){
@@ -25,7 +25,7 @@ public class FractalController {
         double y = Double.parseDouble(request.params(":y"));
         double z = Double.parseDouble(request.params(":z"));
 
-        BufferedImage image = mandelbrot.createFractal(x,y,z);
+        BufferedImage image = imageSystem.getFractalImage(x,y,z);
         response.raw().setContentType("image/jpeg");
 
         try (OutputStream out = response.raw().getOutputStream()) {

@@ -11,8 +11,10 @@ public class App {
     public static void main(String[] args) {
         initialize();
 
+        ImageSystem imageSystem = new ImageSystem();
+
         HomeController homeController = new HomeController();
-        FractalController fractalController = new FractalController();
+        FractalController fractalController = new FractalController(imageSystem);
 
         Spark.get("/", homeController::getHome);
         Spark.get("/fractal/:x/:y/:z", fractalController::getFractal);
