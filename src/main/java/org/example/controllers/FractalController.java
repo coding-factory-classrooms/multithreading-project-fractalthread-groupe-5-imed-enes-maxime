@@ -23,9 +23,9 @@ public class FractalController {
     public Response getFractal(Request request, Response response){
         double x = Double.parseDouble(request.params(":x"));
         double y = Double.parseDouble(request.params(":y"));
-        double zoom = Double.parseDouble(request.params(":zoom"));
+        double z = Double.parseDouble(request.params(":z"));
 
-        BufferedImage image = mandelbrot.createFractal(x,y,zoom);
+        BufferedImage image = mandelbrot.createFractal(x,y,z);
         response.raw().setContentType("image/jpeg");
 
         try (OutputStream out = response.raw().getOutputStream()) {
@@ -39,10 +39,12 @@ public class FractalController {
     public String getFractalDetails(Request request, Response response){
         double x = Double.parseDouble(request.params(":x"));
         double y = Double.parseDouble(request.params(":y"));
-        double zoom = Double.parseDouble(request.params(":zoom"));
+        double z = Double.parseDouble(request.params(":z"));
 
         HashMap<String,Object> model = new HashMap<>();
-        model.put("imageSrc","/fractal/"+x+"/"+y+"/"+zoom);
+        model.put("x",x);
+        model.put("y",y);
+        model.put("z",z);
 
         return Template.render("fractalDetails.html", model);
     }
