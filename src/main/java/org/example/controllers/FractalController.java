@@ -22,13 +22,6 @@ public class FractalController {
 
     public Response getFractal(Request request, Response response){
         BufferedImage image = mandelbrot.createFractal(0.35,0.095,0.009);
-
-        try {
-            ImageIO.write(image, "jpg", new File("mandelbrot.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         response.raw().setContentType("image/jpeg");
 
         try (OutputStream out = response.raw().getOutputStream()) {
