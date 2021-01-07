@@ -4,16 +4,11 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class Mandelbrot {
-
-    private final int width;
-    private final int height;
     private final int maxIteration;
 
     private final int[] colors;
 
-    public Mandelbrot(int width, int height, int maxIteration){
-        this.width = width;
-        this.height = height;
+    public Mandelbrot(int maxIteration){
         this.maxIteration = maxIteration;
         this.colors = getColors(maxIteration);
     }
@@ -30,7 +25,7 @@ public class Mandelbrot {
         return colors;
     }
 
-    public BufferedImage createFractal(double xPos, double yPos, double zoom){
+    public BufferedImage createFractal(int width , int height, double xPos, double yPos, double zoom){
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         for (int row = 0; row < height; row++) {

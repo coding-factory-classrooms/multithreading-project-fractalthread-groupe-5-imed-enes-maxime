@@ -1,14 +1,12 @@
 package org.example.controllers;
 
 import org.example.ImageSystem;
-import org.example.Mandelbrot;
 import org.example.core.Template;
 import spark.Request;
 import spark.Response;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -24,8 +22,10 @@ public class FractalController {
         double x = Double.parseDouble(request.params(":x"));
         double y = Double.parseDouble(request.params(":y"));
         double z = Double.parseDouble(request.params(":z"));
+        int width = Integer.parseInt(request.params(":width"));
+        int height = Integer.parseInt(request.params(":height"));
 
-        BufferedImage image = imageSystem.getFractalImage(x,y,z);
+        BufferedImage image = imageSystem.getFractalImage(width,height,x,y,z);
         response.raw().setContentType("image/jpeg");
 
         try (OutputStream out = response.raw().getOutputStream()) {

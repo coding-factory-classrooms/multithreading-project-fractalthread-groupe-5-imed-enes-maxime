@@ -1,8 +1,7 @@
 #parse("base.html")
 #@mainLayout()
-<h1>Home Template</h1>
-<div>
-    <img id="fractalImage"/>
+<img id="fractalImage"/>
+<div style="position: absolute; top: 0;background-color: white">
     <button onclick="move('x',-1)">Left</button>
     <button onclick="move('x',1)">Right</button>
     <button onclick="move('y',-1)">Up</button>
@@ -21,9 +20,11 @@
         y: 0,
         z: 4,
     };
-    let pas = 10;
+    let pas = 5;
     const FRACTAL_IMAGE = document.getElementById("fractalImage");
     const INPUT_PAS = document.getElementById("inputPas");
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     changeFractalImage();
     INPUT_PAS.value = pas;
 
@@ -38,10 +39,10 @@
         changeFractalImage();
     }
     function changeFractalImage() {
-        FRACTAL_IMAGE.src = `fractals/${positions.x}/${positions.y}/${positions.z}`;
+        FRACTAL_IMAGE.src = `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}`;
     }
     function goToDetails() {
-        location.href = `fractals/${positions.x}/${positions.y}/${positions.z}/details`
+        location.href = `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}/details`
     }
 
     function changePas(value) {
