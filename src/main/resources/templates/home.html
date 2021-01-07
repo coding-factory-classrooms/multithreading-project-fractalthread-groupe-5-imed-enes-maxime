@@ -9,6 +9,7 @@
     <button onclick="move('y',1)">Down</button>
     <button onclick="move('z',-1)">Zoom +</button>
     <button onclick="move('z',1)">Zoom -</button>
+    <button onclick="goToDetails()">Info</button>
 </div>
 <script>
     const positions = {
@@ -30,6 +31,9 @@
     }
     function changeFractalImage() {
         fractalImage.src = `fractal/${positions.x}/${positions.y}/${positions.z}`;
+    }
+    function goToDetails() {
+        location.href = `fractal/${positions.x}/${positions.y}/${positions.z}/details`
     }
 
 </script>

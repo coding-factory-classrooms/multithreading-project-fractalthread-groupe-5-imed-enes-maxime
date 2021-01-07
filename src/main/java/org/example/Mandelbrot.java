@@ -1,9 +1,7 @@
 package org.example;
 
 import java.awt.Color;
-import java.io.File;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 public class Mandelbrot {
 

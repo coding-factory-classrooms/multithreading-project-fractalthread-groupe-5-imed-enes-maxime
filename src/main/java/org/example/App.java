@@ -16,6 +16,7 @@ public class App {
 
         Spark.get("/", homeController::getHome);
         Spark.get("/fractal/:x/:y/:zoom", fractalController::getFractal);
+        Spark.get("/fractal/:x/:y/:zoom/details", fractalController::getFractalDetails);
     }
 
     static void initialize() {

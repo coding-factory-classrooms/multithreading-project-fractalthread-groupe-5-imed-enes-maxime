@@ -35,4 +35,15 @@ public class FractalController {
         }
         return response;
     }
+
+    public String getFractalDetails(Request request, Response response){
+        double x = Double.parseDouble(request.params(":x"));
+        double y = Double.parseDouble(request.params(":y"));
+        double zoom = Double.parseDouble(request.params(":zoom"));
+
+        HashMap<String,Object> model = new HashMap<>();
+        model.put("imageSrc","/fractal/"+x+"/"+y+"/"+zoom);
+
+        return Template.render("fractalDetails.html", model);
+    }
 }
