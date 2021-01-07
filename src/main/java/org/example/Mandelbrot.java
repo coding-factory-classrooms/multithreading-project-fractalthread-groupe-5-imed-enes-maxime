@@ -20,7 +20,7 @@ public class Mandelbrot {
         this.colors = getColors(maxIteration);
     }
 
-    public static int[] getColors(int max){
+    private static int[] getColors(int max){
         int[] colors = new int[max];
         for (int i = 0; i<max; i++) {
             colors[i] = Color.HSBtoRGB(i/256f, 1, i/(i+8f));

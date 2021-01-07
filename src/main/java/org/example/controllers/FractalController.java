@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class FractalController {
@@ -19,15 +20,22 @@ public class FractalController {
         mandelbrot = new Mandelbrot(1000,1000,1000);
     }
 
-    public String getFractal(Request request, Response response){
+    public Response getFractal(Request request, Response response){
         BufferedImage image = mandelbrot.createFractal(0.35,0.095,0.009);
 
         try {
-            ImageIO.write(image, "png", new File("mandelbrot.png"));
+            ImageIO.write(image, "jpg", new File("mandelbrot.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "Fractal";
+        response.raw().setContentType("image/jpeg");
+
+        try (OutputStream out = response.raw().getOutputStream()) {
+            ImageIO.write(image, "jpg", out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }
