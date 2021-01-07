@@ -21,7 +21,11 @@ public class Mandelbrot {
     private static int[] getColors(int max){
         int[] colors = new int[max];
         for (int i = 0; i<max; i++) {
-            colors[i] = Color.HSBtoRGB(i/256f, 1, i/(i+8f));
+            if(i < max/33){
+                colors[i] = new Color(255,255,255).getRGB();
+            }else {
+                colors[i] = Color.HSBtoRGB(i/256f, 1, i/(i+8f));
+            }
         }
         return colors;
     }
