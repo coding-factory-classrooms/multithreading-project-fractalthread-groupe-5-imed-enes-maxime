@@ -2,7 +2,7 @@
 #@mainLayout()
 <h1>Home Template</h1>
 <div>
-    <img id="fractalImage" src="fractal/0/0/4" />
+    <img id="fractalImage"/>
     <button onclick="move('x',-1)">Left</button>
     <button onclick="move('x',1)">Right</button>
     <button onclick="move('y',-1)">Up</button>
@@ -15,6 +15,7 @@
         z: 4,
     };
     const fractalImage = document.getElementById("fractalImage");
+    changeFractalImage();
 
     function move(axis,value) {
         positions[axis] += value;
@@ -23,6 +24,9 @@
 
     function onPosChange() {
         console.log(positions);
+        changeFractalImage();
+    }
+    function changeFractalImage() {
         fractalImage.src = `fractal/${positions.x}/${positions.y}/${positions.z}`;
     }
 
