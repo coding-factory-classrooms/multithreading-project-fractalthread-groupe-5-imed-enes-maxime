@@ -10,6 +10,10 @@
     <button onclick="move('z',-1)">Zoom +</button>
     <button onclick="move('z',1)">Zoom -</button>
     <button onclick="goToDetails()">Info</button>
+    <label>
+        Change pas :
+        <input id="inputPas" type="number" onchange="changePas(this.value)"/>
+    </label>
 </div>
 <script>
     const positions = {
@@ -17,10 +21,14 @@
         y: 0,
         z: 4,
     };
-    const fractalImage = document.getElementById("fractalImage");
+    let pas = 10;
+    const FRACTAL_IMAGE = document.getElementById("fractalImage");
+    const INPUT_PAS = document.getElementById("inputPas");
     changeFractalImage();
+    INPUT_PAS.value = pas;
 
     function move(axis,value) {
+        value *= (Math.log(2) * positions.z) / pas;
         positions[axis] += value;
         onPosChange();
     }
@@ -30,10 +38,14 @@
         changeFractalImage();
     }
     function changeFractalImage() {
-        fractalImage.src = `fractals/${positions.x}/${positions.y}/${positions.z}`;
+        FRACTAL_IMAGE.src = `fractals/${positions.x}/${positions.y}/${positions.z}`;
     }
     function goToDetails() {
         location.href = `fractals/${positions.x}/${positions.y}/${positions.z}/details`
+    }
+
+    function changePas(value) {
+        pas = value;
     }
 
 </script>
