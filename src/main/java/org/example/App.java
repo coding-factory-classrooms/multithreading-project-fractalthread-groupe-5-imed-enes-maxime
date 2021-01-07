@@ -17,8 +17,8 @@ public class App {
         FractalController fractalController = new FractalController(imageSystem);
 
         Spark.get("/", homeController::getHome);
-        Spark.get("/fractals/:x/:y/:z", fractalController::getFractal);
-        Spark.get("/fractals/:x/:y/:z/details", fractalController::getFractalDetails);
+        Spark.get("/fractals/:width/:height/:x/:y/:z", fractalController::getFractal);
+        Spark.get("/fractals/:width/:height/:x/:y/:z/details", fractalController::getFractalDetails);
     }
 
     static void initialize() {
