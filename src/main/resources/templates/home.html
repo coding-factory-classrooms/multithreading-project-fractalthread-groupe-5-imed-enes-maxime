@@ -2,6 +2,29 @@
 #@mainLayout()
 <h1>Home Template</h1>
 <div>
-    <img src="fractal" />
+    <img id="fractalImage" src="fractal/0/0/4" />
+    <button onclick="move('x',-1)">Left</button>
+    <button onclick="move('x',1)">Right</button>
+    <button onclick="move('y',-1)">Up</button>
+    <button onclick="move('y',1)">Down</button>
 </div>
+<script>
+    const positions = {
+        x: 0,
+        y: 0,
+        z: 4,
+    };
+    const fractalImage = document.getElementById("fractalImage");
+
+    function move(axis,value) {
+        positions[axis] += value;
+        onPosChange();
+    }
+
+    function onPosChange() {
+        console.log(positions);
+        fractalImage.src = `fractal/${positions.x}/${positions.y}/${positions.z}`;
+    }
+
+</script>
 #end

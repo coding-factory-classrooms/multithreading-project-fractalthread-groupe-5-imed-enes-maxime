@@ -16,7 +16,7 @@ public class ExampleTest {
         long meanTime = 0;
         while(i < 10){
             long start = System.currentTimeMillis();
-            BufferedImage image = mandelbrot.createFractal(0.35,0.095,0.009);
+            BufferedImage image = mandelbrot.createFractal(0,0,3);
 
             try {
                 ImageIO.write(image, "png", new File("mandelbrot.png"));
