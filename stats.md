@@ -10,3 +10,7 @@
 Story 1 avec 10 itérations: <br>
 Imed : 8355 ms,<br>
 Maxime : 7962 ms
+
+
+Story 6 avec 10 itérations: <br>
+Maxime: 679 ms

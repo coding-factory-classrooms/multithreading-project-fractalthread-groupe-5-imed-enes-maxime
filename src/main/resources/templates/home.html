@@ -10,8 +10,8 @@
     <button onclick="move('z',1)">Zoom -</button>
     <button onclick="goToDetails()">Info</button>
     <label>
-        Change pas :
-        <input id="inputPas" type="number" onchange="changePas(this.value)"/>
+        Change step :
+        <input id="inputStep" type="number" onchange="changeStep(this.value)"/>
     </label>
 </div>
 <script>
@@ -20,16 +20,19 @@
         y: 0,
         z: 4,
     };
-    let pas = 5;
+    let step = 5;
+
     const FRACTAL_IMAGE = document.getElementById("fractalImage");
-    const INPUT_PAS = document.getElementById("inputPas");
+    const INPUT_STEP = document.getElementById("inputStep");
+
     let width = window.innerWidth;
     let height = window.innerHeight;
+
     changeFractalImage();
-    INPUT_PAS.value = pas;
+    INPUT_STEP.value = step;
 
     function move(axis,value) {
-        value *= (Math.log(2) * positions.z) / pas;
+        value *= (Math.log(2) * positions.z) / step;
         positions[axis] += value;
         onPosChange();
     }
@@ -39,14 +42,18 @@
         changeFractalImage();
     }
     function changeFractalImage() {
-        FRACTAL_IMAGE.src = `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}`;
+        FRACTAL_IMAGE.src = getFractalUrl();
     }
     function goToDetails() {
-        location.href = `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}/details`
+        location.href = getFractalUrl()+"/details";
     }
 
-    function changePas(value) {
-        pas = value;
+    function changeStep(value) {
+        step = value;
+    }
+
+    function getFractalUrl() {
+        return `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}`;
     }
 
 </script>
