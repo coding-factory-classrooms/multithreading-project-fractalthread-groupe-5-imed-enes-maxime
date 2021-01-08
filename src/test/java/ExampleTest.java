@@ -1,3 +1,4 @@
+import org.example.LRUCache;
 import org.example.Mandelbrot;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,5 +23,19 @@ public class ExampleTest {
             meanTime += elapsed/i;
         }
         System.out.println("Meantime for 10 fractal : " + meanTime + " ms");
+    }
+
+
+    @Test
+    public void LRUCachePutWithIntegers_Success() {
+        LRUCache<Integer, Integer> cache = new LRUCache<>();
+        cache.put(0, 1);
+        Assert.assertEquals((int) cache.get(0), 1);
+    }
+
+    @Test
+    public void LRUCacheEmptyGetReturnNull() {
+        LRUCache<Integer, Integer> cache = new LRUCache<>();
+        Assert.assertEquals(cache.get(0), null);
     }
 }

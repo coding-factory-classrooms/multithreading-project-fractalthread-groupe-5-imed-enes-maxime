@@ -10,7 +10,20 @@ public class ImageSystem {
     }
 
     public BufferedImage getFractalImage(int width , int height, double x, double y, double z){
-        BufferedImage image = mandelbrot.createFractal(width,height,x,y,z);
+
+        BufferedImage image;
+
+        LRUCache<Coord, BufferedImage> cache = new LRUCache<>();
+        Coord coord = new Coord(width, height, x, y, z);
+        if (cache.get(coord) != null){
+            image = cache.get(coord);
+        }else{
+            System.out.println(coord.toString());
+            image = mandelbrot.createFractal(width,height,x,y,z);
+            cache.put(coord, image);
+        }
+
+
         return image;
     }
 }

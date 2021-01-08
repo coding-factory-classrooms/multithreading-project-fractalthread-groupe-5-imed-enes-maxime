@@ -29,6 +29,7 @@ public class Mandelbrot {
     }
 
     public BufferedImage createFractal(int width , int height, double xPos, double yPos, double zoom){
+
         Fractal fractal = new Fractal(width,height);
         ExecutorService threadPool = Executors.newFixedThreadPool(16);
 
