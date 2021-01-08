@@ -3,7 +3,7 @@
 ## Conditions
 * pan x = 0
 * pan y = 0
-* zoom = 4.0 (neutre)
+* zoom = 3.0 (neutre)
 * itérations = 5000
 * dimensions image = 1000x1000
 
@@ -13,4 +13,5 @@ Maxime : 7962 ms
 
 
 Story 6 avec 10 itérations: <br>
-Maxime: 679 ms
+Maxime: 679 ms (+1072%) <br>
+Imed: 1301 ms (+ 542.2%)
