@@ -10,19 +10,13 @@ import java.io.IOException;
 public class ExampleTest {
     @Test
     public void meanTimeFractal() {
-        Mandelbrot mandelbrot = new Mandelbrot(1000,1000,1000);
+        Mandelbrot mandelbrot = new Mandelbrot(5000);
 
         int i = 0;
         long meanTime = 0;
         while(i < 10){
             long start = System.currentTimeMillis();
-            BufferedImage image = mandelbrot.createFractal(0,0,3);
-
-            try {
-                ImageIO.write(image, "png", new File("mandelbrot.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            BufferedImage image = mandelbrot.createFractal(1000,1000,0,0,3);
             i++;
             long elapsed = System.currentTimeMillis() - start;
             meanTime += elapsed/i;
