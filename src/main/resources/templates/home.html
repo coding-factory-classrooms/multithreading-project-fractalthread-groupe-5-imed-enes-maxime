@@ -27,12 +27,26 @@
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    let count = 1;
 
     changeFractalImage();
     INPUT_STEP.value = step;
 
     function move(axis,value) {
-        value *= (Math.log(2) * positions.z) / step;
+        switch(axis){
+            case 'z':
+                if(value < 0){
+                    value = value/count;
+                    count++;
+                }else {
+                    count--;
+                    value = value/count;
+                }
+            break;
+            default:
+                value *= (Math.log(2) * positions.z) / step;
+            break;
+        }
         positions[axis] += value;
         onPosChange();
     }
