@@ -9,10 +9,6 @@
     <button onclick="move('z',-1)">Zoom +</button>
     <button onclick="move('z',1)">Zoom -</button>
     <button onclick="goToDetails()">Info</button>
-    <label>
-        Change step :
-        <input id="inputStep" type="number" onchange="changeStep(this.value)"/>
-    </label>
 </div>
 <script>
     const positions = {
@@ -27,27 +23,27 @@
 
     let width = window.innerWidth;
     let height = window.innerHeight;
-    let count = 1;
 
     changeFractalImage();
-    INPUT_STEP.value = step;
 
-    function move(axis,value) {
+    function move(axis, value) {
+
         switch(axis){
             case 'z':
                 if(value < 0){
-                    value = value/count;
-                    count++;
-                }else if(value > 0 && count > 1){
-                    count--;
-                    value = value/count;
+                    positions[axis] *= 0.8;
+                }else {
+                    positions[axis] /= 0.8;
                 }
             break;
             default:
-                value *= (Math.log(2) * positions.z) / step;
+                if(value < 0){
+                    positions[axis] -= (positions.z/4);
+                }else {
+                    positions[axis] += (positions.z/4);
+                }
             break;
         }
-        positions[axis] += value;
         onPosChange();
     }
 
