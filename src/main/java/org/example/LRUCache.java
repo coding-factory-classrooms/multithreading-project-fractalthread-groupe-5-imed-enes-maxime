@@ -35,4 +35,11 @@ public class LRUCache<K, V> {
 
         }
     }
+
+    @Override
+    public String toString() {
+        return "LRUCache{" +
+                "cache=" + cache +
+                '}';
+    }
 }

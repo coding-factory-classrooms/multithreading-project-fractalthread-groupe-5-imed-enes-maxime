@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class ImageSystem {
     private final Mandelbrot mandelbrot;
-    private final LRUCache<Coord, BufferedImage> cache;
+    private final LRUCache<String, BufferedImage> cache;
 
     public ImageSystem(){
         mandelbrot = new Mandelbrot(5000);
@@ -16,12 +16,11 @@ public class ImageSystem {
         BufferedImage image;
 
         Coord coord = new Coord(width, height, x, y, z);
-        if (cache.get(coord) != null){
-            image = cache.get(coord);
+        if (cache.get(coord.toString()) != null){
+            image = cache.get(coord.toString());
         }else{
-            System.out.println(coord.toString());
             image = mandelbrot.createFractal(width,height,x,y,z);
-            cache.put(coord, image);
+            cache.put(coord.toString(), image);
         }
 
         return image;
