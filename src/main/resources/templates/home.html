@@ -38,7 +38,7 @@
                 if(value < 0){
                     value = value/count;
                     count++;
-                }else {
+                }else if(value > 0 && count > 1){
                     count--;
                     value = value/count;
                 }
