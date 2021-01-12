@@ -1,55 +1,128 @@
 package org.example;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ThreadPool {
-    private final int nbThreadMax;
-    private final HashMap<Integer,Runnable> queue;
-    private final List<Thread> currentThreads;
-    private boolean locked;
-    private volatile AtomicInteger nextTaskNumber = new AtomicInteger(0);
+public class ThreadPool implements ExecutorService {
 
-    public ThreadPool(int nbThreadMax) {
-        this.nbThreadMax = nbThreadMax;
-        queue = new HashMap<>();
-        currentThreads = new ArrayList<>();
+    private BlockingQueue<Runnable> runnableQueue;
+    private List<WorkerThread> threads;
+    private AtomicBoolean isThreadPoolShutDownInitiated;
+
+    public ThreadPool(int noOfThreads) {
+        this.runnableQueue = new LinkedBlockingQueue<>();
+        this.threads = new ArrayList<>(noOfThreads);
+        this.isThreadPoolShutDownInitiated = new AtomicBoolean(false);
+
+        for (int i = 1; i <= noOfThreads; i++) {
+            WorkerThread thread = new WorkerThread(runnableQueue, this);
+            thread.setName("Worker Thread - " + i);
+            thread.start();
+            threads.add(thread);
+        }
+
     }
 
-    public boolean Execute(Runnable task){
-
-        if(locked){
-            return false;
+    @Override
+    public void execute(Runnable r){
+        if (!isThreadPoolShutDownInitiated.get()) {
+            try {
+                runnableQueue.put(r);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+    }
 
-        if(currentThreads.size() < nbThreadMax){
-            Thread thread = new Thread(task);
-            currentThreads.add(thread);
-            thread.start();
-        }else{
-            queue.put(getNextTaskNumber(),task);
+    @Override
+    public void shutdown() {
+        isThreadPoolShutDownInitiated = new AtomicBoolean(true);
+    }
+
+    @Override
+    public List<Runnable> shutdownNow() {
+        return null;
+    }
+
+    @Override
+    public boolean isShutdown() {
+        return isThreadPoolShutDownInitiated.get();
+    }
+
+    @Override
+    public boolean isTerminated() {
+        return false;
+    }
+
+    @Override
+    public boolean awaitTermination(long l, TimeUnit timeUnit) throws InterruptedException {
+        for (WorkerThread workerThread : threads) {
+            workerThread.join(timeUnit.toMillis(l));
         }
-
         return true;
     }
 
-    public void Lock(){
-        locked = true;
+    @Override
+    public <T> Future<T> submit(Callable<T> callable) {
+        return null;
     }
 
-    private void FinishThread(Thread thread){
-        currentThreads.remove(thread);
-        StartNextTask();
+    @Override
+    public <T> Future<T> submit(Runnable runnable, T t) {
+        return null;
     }
 
-    private void StartNextTask(){
-        //queue.get()
+    @Override
+    public Future<?> submit(Runnable runnable) {
+        return null;
     }
 
-    private Integer getNextTaskNumber(){
-        return  nextTaskNumber.incrementAndGet();
+    @Override
+    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> collection) throws InterruptedException {
+        return null;
     }
 
+    @Override
+    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> collection, long l, TimeUnit timeUnit) throws InterruptedException {
+        return null;
+    }
+
+    @Override
+    public <T> T invokeAny(Collection<? extends Callable<T>> collection) throws InterruptedException, ExecutionException {
+        return null;
+    }
+
+    @Override
+    public <T> T invokeAny(Collection<? extends Callable<T>> collection, long l, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+        return null;
+    }
+
+    private static class WorkerThread extends Thread {
+        private BlockingQueue<Runnable> taskQueue;
+        private ThreadPool threadPool;
+
+        public WorkerThread(BlockingQueue<Runnable> taskQueue, ThreadPool threadPool) {
+            this.taskQueue = taskQueue;
+            this.threadPool = threadPool;
+        }
+
+        @Override
+        public void run() {
+            try {
+
+                while (!threadPool.isThreadPoolShutDownInitiated.get() || !taskQueue.isEmpty()) {
+                    Runnable r;
+
+                    while ((r = taskQueue.poll()) != null) {
+                        r.run();
+                    }
+                    Thread.sleep(1);
+                }
+            } catch (RuntimeException | InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+    }
 }

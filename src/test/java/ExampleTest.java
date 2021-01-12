@@ -1,23 +1,27 @@
 import org.example.LRUCache;
 import org.example.Mandelbrot;
+import org.example.ThreadPool;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 public class ExampleTest {
     @Test
     public void meanTimeFractal() {
-        Mandelbrot mandelbrot = new Mandelbrot(5000);
+        Mandelbrot mandelbrot = new Mandelbrot(5000, 32);
 
         int i = 0;
         long meanTime = 0;
         while(i < 10){
             long start = System.currentTimeMillis();
-            BufferedImage image = mandelbrot.createFractal(1000,1000,0,0,3);
+            ExecutorService newThreadPool = new ThreadPool(16);
+            try {
+                BufferedImage image = mandelbrot.createFractal(1000,1000,0,0,3, newThreadPool);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             i++;
             long elapsed = System.currentTimeMillis() - start;
             meanTime += elapsed;
