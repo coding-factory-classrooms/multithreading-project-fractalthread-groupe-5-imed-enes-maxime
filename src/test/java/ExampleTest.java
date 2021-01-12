@@ -20,9 +20,9 @@ public class ExampleTest {
             BufferedImage image = mandelbrot.createFractal(1000,1000,0,0,3);
             i++;
             long elapsed = System.currentTimeMillis() - start;
-            meanTime += elapsed/i;
+            meanTime += elapsed;
         }
-        System.out.println("Meantime for 10 fractal : " + meanTime + " ms");
+        System.out.println("Meantime for 10 fractal : " + meanTime / 10 + " ms");
     }
 
 

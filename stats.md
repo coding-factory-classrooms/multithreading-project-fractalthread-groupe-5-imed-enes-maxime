@@ -13,5 +13,5 @@ Maxime : 7962 ms
 
 
 Story 6 avec 10 itérations: <br>
-Maxime: 679 ms (+1072%) <br>
+Maxime: 186 ms (+%) <br>
 Imed: 1301 ms (+ 542.2%)

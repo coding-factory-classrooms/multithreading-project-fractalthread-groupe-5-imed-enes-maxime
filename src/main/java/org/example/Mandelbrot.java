@@ -29,27 +29,33 @@ public class Mandelbrot {
     }
 
     public BufferedImage createFractal(int width , int height, double xPos, double yPos, double zoom){
-
+        long start = System.currentTimeMillis();
         Fractal fractal = new Fractal(width,height);
-        ExecutorService threadPool = Executors.newFixedThreadPool(16);
+        int nbThreadMax = 16;
+        int nbThread = nbThreadMax * 2;
+        ExecutorService threadPool = Executors.newFixedThreadPool(nbThreadMax);
+
+
+        int chunkSizeX = width / nbThread;
+        int chunkSizeY = height / nbThread;
 
         int x = 0;
-        int chunkSize = 40;
-
         while (x < width){
 
-            int nextX = x + chunkSize;
+            int nextX = x + chunkSizeX;
+
             if(width - nextX < 0){
-                nextX = width - x;
+                nextX = x + width - x;
             }
             int y = 0;
-            while (y < height){
-                int nextY = y + chunkSize;
-                if(height - nextY < 0){
-                    nextY = height - y;
-                }
 
+            while (y < height){
+                int nextY = y + chunkSizeY;
+                if(height - nextY < 0){
+                    nextY = y + height - y;
+                }
                 CreateFractalTask task = new CreateFractalTask(width,height,colors,maxIteration,x,y,nextX,nextY,xPos,yPos,zoom, fractal);
+
                 threadPool.execute(task);
 
                 y = nextY;
@@ -64,7 +70,7 @@ public class Mandelbrot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        System.out.println("time create : " + (System.currentTimeMillis() - start) + " ms");
         return fractal.getImage();
     }
 
@@ -130,7 +136,7 @@ public class Mandelbrot {
             this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         }
 
-        public synchronized void append(int x,int y, int color){
+        public void append(int x,int y, int color){
             image.setRGB(x,y,color);
         }
 
