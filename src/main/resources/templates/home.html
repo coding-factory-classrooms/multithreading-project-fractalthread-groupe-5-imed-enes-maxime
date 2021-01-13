@@ -1,7 +1,7 @@
 #parse("base.html")
 #@mainLayout()
 <img id="fractalImage"/>
-<div style="position: absolute; top: 0;background-color: white">
+<div style="position: absolute; top: 5px;left:5px;background-color: white">
     <button onclick="move('x',-1)">Left</button>
     <button onclick="move('x',1)">Right</button>
     <button onclick="move('y',-1)">Up</button>
@@ -9,13 +9,22 @@
     <button onclick="move('z',-1)">Zoom +</button>
     <button onclick="move('z',1)">Zoom -</button>
     <button onclick="goToDetails()">Info</button>
+    <label>
+        Algorithm
+        <select onchange="changeAlgorithm(this.value)">
+            <option value="mandelbrot">Mandelbrot</option>
+            <option value="julia">Julia</option>
+        </select>
+    </label>
+    <button onclick="reInitPosition()">Init</button>
 </div>
 <script>
-    const positions = {
+    let positions = {
         x: 0,
         y: 0,
         z: 4,
     };
+    let algorithm = "mandelbrot";
     let step = 5;
 
     const FRACTAL_IMAGE = document.getElementById("fractalImage");
@@ -27,22 +36,18 @@
     changeFractalImage();
 
     function move(axis, value) {
-
-        switch(axis){
-            case 'z':
-                if(value < 0){
-                    positions[axis] *= 0.8;
-                }else {
-                    positions[axis] /= 0.8;
-                }
-            break;
-            default:
-                if(value < 0){
-                    positions[axis] -= (positions.z/4);
-                }else {
-                    positions[axis] += (positions.z/4);
-                }
-            break;
+        if(axis === "z"){
+            if(value < 0){
+                positions[axis] *= 0.9;
+            }else {
+                positions[axis] /= 0.9;
+            }
+        }else{
+            if(value < 0){
+                positions[axis] -= (positions.z/8);
+            }else {
+                positions[axis] += (positions.z/8);
+            }
         }
         onPosChange();
     }
@@ -63,7 +68,21 @@
     }
 
     function getFractalUrl() {
-        return `fractals/${width}/${height}/${positions.x}/${positions.y}/${positions.z}`;
+        return `fractals/${algorithm}/${width}/${height}/${positions.x}/${positions.y}/${positions.z}`;
+    }
+
+    function changeAlgorithm(newAlgorithm) {
+        algorithm = newAlgorithm;
+        changeFractalImage();
+    }
+
+    function reInitPosition() {
+        positions = {
+            x: 0,
+            y: 0,
+            z: 4,
+        };
+        onPosChange();
     }
 
 </script>

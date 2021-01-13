@@ -4,9 +4,11 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Mandelbrot extends FractalSystem{
+public class Julia extends FractalSystem{
+    private static final double CX = -0.7;
+    private static final double CY = 0.27015;
 
-    public Mandelbrot(int maxIteration, int nbThread) {
+    public Julia(int maxIteration, int nbThread) {
         super(maxIteration, nbThread);
     }
 
@@ -34,7 +36,7 @@ public class Mandelbrot extends FractalSystem{
                 if(height - nextY < 0){
                     nextY = y + height - y;
                 }
-                MandelbrotFractalTask task = new MandelbrotFractalTask(width,height,colors,maxIteration,x,y,nextX,nextY,xPos,yPos,zoom, fractal);
+                JuliaFractalTask task = new JuliaFractalTask(width,height,colors,maxIteration,x,y,nextX,nextY,xPos,yPos,zoom, fractal);
 
                 threadPool.execute(task);
 
@@ -56,20 +58,16 @@ public class Mandelbrot extends FractalSystem{
 
     public static int getPixelIteration(int width, int height, double xPos, double yPos, double zoom, int col, int row,int maxIteration){
 
-        int widthHalf = width/2;
-        int heightHalf = height/2;
-
-        double c_re = ((col - widthHalf)*zoom/width) + xPos;
-        double c_im = ((row - heightHalf)*zoom/width) + yPos;
-        double x = 0, y = 0;
+        double zx = 1.5 * (row - width / 2) / (0.5 * zoom * width) + xPos;
+        double zy = (col - height / 2) / (0.5 * zoom * height) + yPos;
         int iteration = 0;
-        while (x*x+y*y < 4 && iteration < maxIteration) {
-            double x_new = x*x-y*y+c_re;
-            y = 2*x*y+c_im;
-            x = x_new;
+        while (zx * zx + zy * zy < 4 && iteration < maxIteration) {
+            double tmp = zx * zx - zy * zy + CX;
+            zy = 2.0 * zx * zy + CY;
+            zx = tmp;
             iteration++;
         }
+
         return iteration;
     }
-
 }

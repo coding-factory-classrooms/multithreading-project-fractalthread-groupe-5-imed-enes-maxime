@@ -24,8 +24,14 @@ public class FractalController {
         double z = Double.parseDouble(request.params(":z"));
         int width = Integer.parseInt(request.params(":width"));
         int height = Integer.parseInt(request.params(":height"));
+        String algorithm = request.params(":algorithm");
 
-        BufferedImage image = imageSystem.getFractalImage(width,height,x,y,z);
+        BufferedImage image = null;
+        if(algorithm.equals("mandelbrot")){
+            image = imageSystem.getMandelbrotFractalImage(width,height,x,y,z);
+        }else{
+            image = imageSystem.getJuliaFractalImage(width,height,x,y,z);
+        }
         response.raw().setContentType("image/jpeg");
 
         try (OutputStream out = response.raw().getOutputStream()) {
@@ -40,11 +46,13 @@ public class FractalController {
         double x = Double.parseDouble(request.params(":x"));
         double y = Double.parseDouble(request.params(":y"));
         double z = Double.parseDouble(request.params(":z"));
+        String algorithm = request.params(":algorithm");
 
         HashMap<String,Object> model = new HashMap<>();
         model.put("x",x);
         model.put("y",y);
         model.put("z",z);
+        model.put("algorithm",algorithm);
 
         return Template.render("fractalDetails.html", model);
     }
