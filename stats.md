@@ -9,9 +9,9 @@
 
 Story 1 avec 10 itérations: <br>
 Imed : 8355 ms,<br>
-Maxime : 7962 ms
+Maxime : 1919 ms
 
 
 Story 6 avec 10 itérations: <br>
-Maxime: 186 ms (+%) <br>
+Maxime: 186 ms (+1031%) <br>
 Imed: 418 ms (+ 1898.8 %)
